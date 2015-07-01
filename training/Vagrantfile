@@ -1,0 +1,51 @@
+# pwn_lab/training/Vagrantfile
+# Copyright (C) 2015 Zach Grace (ztgrace)
+# 
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# See <http://www.gnu.org/licenses/> for a copy of the GNU General
+# Public License
+
+Vagrant.configure(2) do |config|
+
+base_network = "172.16.31"
+
+  # kali_mini
+  config.vm.define :kali_mini do |kali_mini|
+    kali_mini.vm.box = "kali_mini"
+    kali_mini.vm.box_url = "http://files.zachgrace.com/kali_mini-201506302203.box"
+    kali_mini.vm.box_download_checksum = "4621dbf978436a2079d614174731ab8391e728fabf7177462aa6b1183328e22e"
+    kali_mini.vm.box_download_checksum_type = "256"
+    kali_mini.vm.network :private_network, ip: "#{base_network}.10"
+
+    kali_mini.vm.provision "ansible" do |ansible|
+      ansible.playbook = "kali-playbook.yml"
+    end
+  end
+
+  # Metasploitable2
+  config.vm.define :metasploitable2 do |m2|
+    m2.vm.box = "metasploitable2"
+    m2.vm.box_url = "http://files.zachgrace.com/metasploitable2-201506282238.box"
+    m2.vm.box_download_checksum = "c5a3fbde8eb44a89849ee805afc737d1a5b8470d8ee08bcec4e897fff8326ad1"
+    m2.vm.box_download_checksum_type = "sha256"
+    m2.vm.network :private_network, ip: "#{base_network}.100"
+  end
+
+  # OWASP Broken Web Apps
+  config.vm.define :owaspbwa do |owaspbwa|
+    owaspbwa.vm.box = "owaspbwa"
+    owaspbwa.vm.box_url = "http://files.zachgrace.com/owaspbwa-201506302357.box"
+    owaspbwa.vm.box_download_checksum = "9078718ef5b7d19931827e5063ed172d670397b97f41afc715a3cf7d043b63bd"
+    owaspbwa.vm.box_download_checksum_type = "sha256"
+    owaspbwa.vm.network :private_network, ip: "#{base_network}.101"
+  end
+end

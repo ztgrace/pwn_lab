@@ -1,0 +1,33 @@
+# pwn_lab/training/kali-playbook.yml
+# Copyright (C) 2015 Zach Grace (ztgrace)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# See <http://www.gnu.org/licenses/> for a copy of the GNU General
+# Public License
+
+---
+- hosts: kali_mini
+  remote_user: vagrant
+  sudo: yes
+  tasks:
+    - name: Perform an apt-get update & apt-get dist-upgrade
+      apt: update_cache=yes
+      apt: upgrade=dist
+
+    # Due to some quirkiness in Vagrant's OS detection, I had to
+    # replace Kali with Debian. The line below fixes that hack.
+    # https://github.com/mitchellh/vagrant/blob/master/plugins/guests/debian/guest.rb#L5
+    - replace: dest=/etc/issue regexp='Debian' replace='Kali' 
+
+    # Install additional packages if needed, ex:
+    #- name: Install zaproxy
+    #  apt: name=zaproxy state=present
