@@ -23,7 +23,7 @@ base_network = "172.16.31"
     kali_mini.vm.box = "kali_mini"
     kali_mini.vm.box_url = "http://files.zachgrace.com/kali_mini-201506302203.box"
     kali_mini.vm.box_download_checksum = "4621dbf978436a2079d614174731ab8391e728fabf7177462aa6b1183328e22e"
-    kali_mini.vm.box_download_checksum_type = "256"
+    kali_mini.vm.box_download_checksum_type = "sha256"
     kali_mini.vm.network :private_network, ip: "#{base_network}.10"
 
     kali_mini.vm.provision "ansible" do |ansible|
