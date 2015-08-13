@@ -20,8 +20,7 @@
   sudo: yes
   tasks:
     - name: Perform an apt-get update & apt-get dist-upgrade
-      apt: update_cache=yes
-      apt: upgrade=dist
+      apt: upgrade=dist update_cache=yes
 
     # Due to some quirkiness in Vagrant's OS detection, I had to
     # replace Kali with Debian. The line below fixes that hack.

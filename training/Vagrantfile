@@ -20,6 +20,10 @@ base_network = "172.16.31"
 
   # kali_mini
   config.vm.define :kali_mini do |kali_mini|
+    # uncomment the lines below for a gui kali
+    #config.vm.provider "virtualbox" do |v|
+    #  v.gui = true
+    #end
     kali_mini.vm.box = "kali_mini"
     kali_mini.vm.box_url = "http://files.zachgrace.com/kali_mini-201506302203.box"
     kali_mini.vm.box_download_checksum = "4621dbf978436a2079d614174731ab8391e728fabf7177462aa6b1183328e22e"
