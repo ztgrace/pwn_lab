@@ -1,0 +1,52 @@
+# pwn_lab/x11/x11.yml
+# Copyright (C) 2015 Zach Grace (ztgrace)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# See <http://www.gnu.org/licenses/> for a copy of the GNU General
+# Public License
+
+---
+- hosts: x11
+  remote_user: vagrant
+  sudo: yes
+
+  tasks:
+    - name: Set hostname
+      hostname: name=pwnlab-x11
+
+    - name: Fix repos
+      shell: sudo sed -i -re 's/([a-z]{2}\.)?archive.ubuntu.com|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
+
+    - name: Update cache and install ubuntu-desktop
+      apt: name=ubuntu-desktop install_recommends=no  update_cache=yes
+
+    - name: Remove nolisten in /etc/X11/xinit/xserverrc
+      lineinfile: dest=/etc/X11/xinit/xserverrc regexp="nolisten" line='exec /usr/bin/X "$@"'
+
+    - name: Create autologin script
+      template: src=gdm.conf.j2 dest=/etc/gdm/custom.conf
+
+    - name: Start GDM
+      service: name=gdm state=restarted
+
+    - pause: seconds=15
+
+    - name: Open X11
+      shell: export DISPLAY=:0; gnome-terminal -e "xhost +"
+      sudo: no
+
+    - name: Create a root shell
+      shell: export DISPLAY=:0; sudo gnome-terminal
+      sudo: no
+      async: 10 # needs to be an asynchronus task so we can exit cleanly
+      poll: 0
+

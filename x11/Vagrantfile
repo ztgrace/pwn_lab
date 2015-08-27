@@ -1,0 +1,38 @@
+# pwn_lab/training/Vagrantfile
+# Copyright (C) 2015 Zach Grace (ztgrace)
+# 
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# See <http://www.gnu.org/licenses/> for a copy of the GNU General
+# Public License
+
+Vagrant.configure(2) do |config|
+
+base_network = "172.16.31"
+
+  # x11
+  config.vm.define :x11 do |x11|
+    # Comment out the three lines below to make the VM headless
+    config.vm.provider "virtualbox" do |v|
+      v.gui = true
+    end
+
+    x11.vm.box = "x11"
+    x11.vm.box_url = "http://files.vagrantup.com/lucid32.box"
+    x11.vm.box_download_checksum = "1e644292a790ccd1e72f2a81ac73f511e88f42c65d0c822b50c08baa4f38f666"
+    x11.vm.box_download_checksum_type = "sha256"
+    x11.vm.network :private_network, ip: "#{base_network}.102"
+
+    x11.vm.provision "ansible" do |ansible|
+      ansible.playbook = "x11.yml"
+    end
+  end
+end
