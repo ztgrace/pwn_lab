@@ -5,6 +5,7 @@ PWN Lab is a collection of Vagrant scripts and boxes to create security training
 ## Environments
 
 * **Training** - The PWN Lab training environment is a collection of VMs to hone your hacking skills, test your tools and perform demos.
+* **X11** - This machine has a poorly configured VM. This replicates poor configurations I've seen on past engagements.
 
 ## Prerequisites
 
